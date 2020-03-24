@@ -1,0 +1,46 @@
+1.拉取centos镜像
+    docker pull centos:centos7.7.1908
+
+2.建立本机对应docker-centos76 镜像端口映射。ssh默认的端口为22,我们将docker中centos的22端口映射到宿主机的5022端口
+    docker run -d -p 5022:22 --name centos7.7 --privileged centos:7.7.1908 /usr/sbin/init
+
+3.进入容器
+    docker exec -it centos7.7 bash
+
+1.安装常用工具
+    yum install -y vim wget unzip zip 
+
+2.中文支持
+    touch /etc/profile.d/lang.sh
+    echo 'export LC_ALL=en_US.UTF-8' >> /etc/profile.d/lang.sh
+    echo 'export LANG=en_US.UTF-8' >> /etc/profile.d/lang.sh
+
+3.ifconfig安装
+    yum install -y net-tools.x86_64
+
+4.ssh安装
+    yum install -y openssh-server 
+    systemctl restart sshd
+
+5.设置时区
+    timedatectl set-timezone Asia/Shanghai
+
+6.清理临时文件
+    yum clean all
+    rm -rf /tmp/* rm -rf /var/cache/yum/*
+
+1.修改sshd_config 为密码登录
+    vim /etc/ssh/sshd_config
+    #打开注释 PermitRootLogin yes, 允许密码登录,保存退出
+
+2.设置root用户密码
+    passwd root
+
+docker commit cid name:version
+
+mysql
+
+docker pull mysql:5.7
+
+docker run -d -p 13306:3306 --name mysql-dev -e MYSQL_ROOT_PASSWORD=root mysql:5.7
+
